@@ -1,0 +1,16 @@
+Lobby
+An empty and bright lobby with the castle's exit to the east. The lobby is covered with ornate carpets, and you can follow the carpets to all directions of the castle.
+Library
+The study was dark and the shelves were full of books. Candles on the table glow eerily.
+Corridor
+Narrow corridor. Maybe there will be something attractive at the end of the hallway.
+Spiral-Staircase
+An upward staircase leads to the second floor
+Kitchen
+The kitchen is full of food and utensils. There is a large table in the middle of the room. There is a small stove in the corner. The kitchen connects the other two rooms
+Dining-Room
+The dining room is one of the rare rooms that is not so gloomy. The room is decorated with a large table and chairs. There is an elder sitting at the table.
+Weapon-Room
+The weapon room is filled with weapons and armor. There is a large table in the middle of the room. There is a small stove in the corner. The weapon room connects the other two rooms
+Chamber-of-Secrets
+A small, dark room with a single candle on the wall. The room is filled with a small table and chairs. You see a beautiful princess in the room. Go get her!
