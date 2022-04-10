@@ -13,11 +13,6 @@ bool data_base::check()
 }
 bool data_base::init()
 {
-    // if (file_exist)
-    // {
-    //     cout << "File <" << filename << "> already exists!" << endl;
-    //     return false;
-    // }
     ofstream fout(filename);
     if (!fout)
         return false;
