@@ -4,12 +4,15 @@
  *  2020/04/20
  * @description:
  *  This file contains the implementation of the fraction class.
+ * @warning:
  *  If you want to know more about the implementation of the fraction class,
  *  please read the frac.hpp file.
  *  All the comments are written in the frac.hpp file.
+ *
+ *  要想看注释去头文件看，具体实现没什么好注释的, 注释了也全都是废话
  */
 #include <frac.hpp>
-#include <cmath>   // for pow and floor
+#include <cmath>   // for fabs
 #include <sstream> // for ostringstream
 fraction::fraction(double frac)
 {
