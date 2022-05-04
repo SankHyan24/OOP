@@ -1,23 +1,36 @@
 #pragma once
 #include <iostream>
-/*
- * Class Fraction
- * The Range of the Fraction is from:
- * 2^31-1 to 1/2^31
+/**
+ * File: frac.hpp
+ * @author Charles Sun
+ * Class fraction
  */
-inline int pow10(int n) // get 10^n in integer
-{
-    int res = 1;
-    for (int i = 0; i < n && i < 10; i++)
-        res *= 10;
-    return res;
-}
+
+// Class Fraction
+// This class is used to store the fraction
+// It contains the numerator and denominator
+// Can use the operator +, -, *, / and so on
 class fraction
 {
 private:
+    /**
+     * Private members:
+     *  @param numerator : the numerator of the fraction
+     *  @param denominator : the denominator of the fraction
+     *  @param Accuracy : the accuracy of the fraction casting from double
+     */
+    const double Accuracy = 0.000001;
     int numerator;
     int denominator;
-    void reduce() // Simplification
+    /**
+     * Private functions:
+     *   reduce : reduce the fraction
+     * ---------------------------------------
+     * This function is used to simplify the fraction
+     * Like: transform 2/4 to 1/2, transform 36/4 to 9/1
+     * It will be called in the constructor and operator automatically
+     */
+    void reduce()
     {
         if (denominator < 0) // Sign normalization
             numerator = -numerator, denominator = -denominator;
@@ -35,11 +48,24 @@ private:
 
 public:
     // ctor dtor
+
+    // Public function:
+    // ctor: default
+    // construct a fraction with numerator and denominator as 0 and 1
     fraction() : numerator(0), denominator(1){};
+    // Public function:
+    // ctor: with numerator and denominator
+    // construct a fraction with numerator and denominator as n and d
     fraction(int n, int d) : numerator(n), denominator(d) { this->reduce(); };
-    // copy constructor from fraction
+    // Public function:
+    // ctor: copy constructor from fraction
+    // construct a fraction with numerator and denominator as f.numerator and f.denominator
+    // f is what you give to the constructor
     fraction(const fraction &f) : numerator(f.numerator), denominator(f.denominator) { this->reduce(); };
+    // Public function:
+    // ctor: copy constructor from double
     // from double to construct a fraction, works fine on the numbers like 1.625
+    // this function will automatically choose a better method to reduce the fraction
     fraction(double frac);
 
     virtual ~fraction(){};

@@ -1,27 +1,33 @@
+/**
+ * File: frac.cpp
+ * @date:
+ *  2020/04/20
+ * @description:
+ *  This file contains the implementation of the fraction class.
+ *  If you want to know more about the implementation of the fraction class,
+ *  please read the frac.hpp file.
+ *  All the comments are written in the frac.hpp file.
+ */
 #include <frac.hpp>
 #include <cmath>   // for pow and floor
 #include <sstream> // for ostringstream
 fraction::fraction(double frac)
-{ // use 2 method (decimal and binary) to construct a fraction
-    int len_after_point = 0, sign = frac >= 0 ? 1 : -1;
-    double tmp = sign * frac; // sign modification, tmp is the fraction section without sign
-    for (; fabs(tmp - floor(tmp)) > __DBL_EPSILON__ && len_after_point < 28; len_after_point++)
-        tmp = (tmp - floor(tmp)) * 2; // use binary point and get the degree
-    fraction tmpfrac2(int(frac * pow(2, len_after_point)), 1 << len_after_point);
-    if (len_after_point > 20) // that means decimal may works better
+{
+    int iNumerator = 0, iDenominator = 1, tle_flag = 0;
+    bool positive = frac >= 0 ? true : false;
+    double unsigned_frac = fabs(frac);
+    double dNumerator = 0, dDenominator = 1, dFraction = 0;
+    while (fabs(dFraction - unsigned_frac) > Accuracy && tle_flag < 1 << 30)
     {
-        int newlen = 0;
-        double tmp = sign * frac;
-        for (; fabs(tmp - floor(tmp)) > 0.1 && newlen < 9; newlen++)
-            tmp = (tmp - floor(tmp)) * 10; // use decimal point and get the degree
-        fraction tmpfrac10(int(frac * pow(10, newlen)) + 1, pow10(newlen));
-        if (abs(tmpfrac10.denominator) + abs(tmpfrac10.numerator) <= 1e6) // because 1<<10 approx 1e3
-        {
-            numerator = tmpfrac10.numerator, denominator = tmpfrac10.denominator; // printf("by 10");
-            return;
-        } // If decimal not better, we also use binary to construct to keep the pricision
+        if (dFraction > unsigned_frac)
+            iDenominator += 1;
+        else
+            iNumerator += 1;
+        dFraction = (double)iNumerator / iDenominator;
+        tle_flag++;
     }
-    numerator = tmpfrac2.numerator, denominator = tmpfrac2.denominator; // printf("by 2");
+    numerator = positive ? iNumerator : -iNumerator;
+    denominator = iDenominator;
 }
 fraction fraction::operator+(const fraction &f) const
 {
