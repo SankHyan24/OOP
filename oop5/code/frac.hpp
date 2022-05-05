@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+using namespace std;
 /**
  * File: frac.hpp
  * @author Charles Sun
@@ -67,6 +68,22 @@ public:
     // from double to construct a fraction, works fine on the numbers like 1.625
     // this function will automatically choose a better method to reduce the fraction
     fraction(double frac);
+    // Public function:
+    // ctor: copy constructor from string
+    // from string to construct a fraction, works fine on the numbers like "1.625"
+    // this function will automatically choose a better method to reduce the fraction
+    fraction(string str)
+    {
+        // string to double
+        double d = stod(str);
+        // double to fraction
+        fraction f(d);
+        // copy the fraction
+        numerator = f.numerator;
+        denominator = f.denominator;
+        // reduce the fraction
+        this->reduce();
+    };
 
     virtual ~fraction(){};
     // arithmetical operators: + - * /
