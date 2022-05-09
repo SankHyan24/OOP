@@ -114,6 +114,7 @@ template <class T>
 void Vector<T>::clear()
 {
     m_nSize = 0;
+    delete[] m_pElements;
 }
 
 /**
@@ -143,9 +144,16 @@ void Vector<T>::inflate()
         throw std::bad_alloc();
     for (int i = 0; i < m_nSize; i++)
         pNewElements[i] = m_pElements[i];
-    delete[] m_pElements;
+    delete[] m_pElements; // destroy the old storage
     m_pElements = pNewElements;
     m_nCapacity *= 2;
 }
 
+// Add your class you want to use in the template here:
 template class Vector<int>;
+template class Vector<std::string>;
+// template class Vector<double>;
+// template class Vector<char>;
+// template class Vector<bool>;
+// template class Vector<float>;
+// template class Vector<long long>;
