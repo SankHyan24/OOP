@@ -78,6 +78,8 @@ T &Vector<T>::at(int index)
     if (index < 0 || index >= m_nSize)
         throw std::out_of_range("Index out of range");
     return m_pElements[index];
+
+    // throw an exception if index is out of range
 }
 
 /**

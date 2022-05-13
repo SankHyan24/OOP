@@ -54,6 +54,7 @@ int main()
     assert(v.size() == 0);
     assert(v.empty());
     /** decomment the next line, and it will throw an error */
+    // int test_id = test_num1 - 10;
     // assert(v.at(test_id) == v_int[test_id]);
     delete[] v_int;
 
