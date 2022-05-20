@@ -3,6 +3,19 @@
 #include <ctime>    // for random number generation
 #include <assert.h> // for assert to test the code
 using namespace std;
+
+class Test
+{
+public:
+    Test() = default;
+    ~Test() = default;
+    int Int;
+    double Double;
+    bool operator==(const Test &r) const
+    {
+        return Int == r.Int && Double == r.Double;
+    }
+};
 /**
  * Function main
  * This function is used to test all the
@@ -20,7 +33,7 @@ int main()
     // set the test utility
     srand(time(NULL));
     // test_num1/2 is used to test the constructor.
-    size_t test_num1 = 10000, test_num2 = 100;
+    size_t test_num1 = 10000, test_num2 = 1000;
     auto v_int = new int[test_num1];
 
     // test the constructors
@@ -58,20 +71,37 @@ int main()
     // assert(v.at(test_id) == v_int[test_id]);
     delete[] v_int;
 
-    // test the copy constructor on other class
-    Vector<string> v2(test_num2);
+    // test the copy constructor and STL class
+    Vector<int> v2(test_num2);
     assert(v2.size() == test_num2);
     assert(!v2.empty());
     for (size_t i = 0; i < test_num2; i++)
     {
-        v2[i] = "test" + to_string(i * i);
-        assert(v2[i] == "test" + to_string(i * i));
+        v2[i] = rand() % test_num2;
+        assert(v2[i] == v2.at(i));
     }
-    auto v3(v2);
+    Vector<int> v3(v2);
     assert(v3.size() == test_num2);
     assert(!v3.empty());
     for (size_t i = 0; i < test_num2; i++)
-        assert(v3[i] == "test" + to_string(i * i));
+        assert(v3[i] == v2[i]);
+
+    // test the Test class
+    Vector<Test> v4(test_num2);
+    assert(v4.size() == test_num2);
+    assert(!v4.empty());
+    for (size_t i = 0; i < test_num2; i++)
+    {
+        v4[i].Int = rand() % test_num2;
+        v4[i].Double = rand() % test_num2;
+        assert(v4[i].Int == v4.at(i).Int);
+        assert(v4[i].Double == v4.at(i).Double);
+    }
+    Vector<Test> v5(v4);
+    assert(v5.size() == test_num2);
+    assert(!v5.empty());
+    for (size_t i = 0; i < test_num2; i++)
+        assert(v5[i] == v4[i]);
 
     // assert(false);
     cout << "Test Passed" << endl;
