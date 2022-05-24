@@ -2,9 +2,21 @@
 #include <random>
 #include <iostream>
 #include <algorithm>
-
-namespace utility
+/**
+ * Namespace: Utility
+ * Description: Contains utility functions
+ */
+namespace Utility
 {
+    /**
+     * Class RandUtil
+     * Description: Random number generator
+     * Functions:
+     *  - RandomInt64: generate a random 64-bit integer
+     *  - RandomInt: generate a random 32-bit integer
+     *  - RandomDouble: generate a random double
+     *  - RandomString: generate a random string
+     */
     class RandUtil
     {
     public:
@@ -13,6 +25,13 @@ namespace utility
             static std::random_device rd;
             std::mt19937_64 gen(rd());
             std::uniform_int_distribution<int64_t> dis(min, max);
+            return dis(gen);
+        }
+        static int RandomInt(int min, int max)
+        {
+            static std::random_device rd;
+            std::mt19937_64 gen(rd());
+            std::uniform_int_distribution<int> dis(min, max);
             return dis(gen);
         }
         static double RandomDouble(double min, double max)

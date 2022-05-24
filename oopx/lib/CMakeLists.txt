@@ -1,3 +1,2 @@
 add_library(tinyxml ./tinyxml2.cpp)
-aux_source_directory(lib libsrc)
-target_sources(tinyxml PUBLIC ${libsrc})
+target_include_directories(tinyxml PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
