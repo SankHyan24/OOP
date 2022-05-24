@@ -1,8 +1,9 @@
 #include <iostream>
 #include <fstream>
 #include <binserial.hpp>
+#include <utility.hpp>
 using namespace std;
-
+using namespace BinSerial;
 int main()
 {
     int64_t a = 0xABCDEF;

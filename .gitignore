@@ -1,3 +1,7 @@
 *build/
 *vscode/
 *pro/
+*data/
+tinyxml2/
+tmp/
+*.tmp
