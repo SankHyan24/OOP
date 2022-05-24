@@ -1,9 +1,7 @@
-#include <iostream>
-#include <fstream>
 #include <binserial.hpp>
+#include <utility.hpp>
 using namespace std;
-
-int main()
+void binary_test()
 {
     int64_t a = 0xABCDEF;
     double score = 99.9;
@@ -11,7 +9,5 @@ int main()
     serialize(a, file_name);
     int64_t b;
     deserialize(b, file_name);
-    cout << b << endl;
-    std::cout << "Hello World!" << std::endl;
-    return 0;
+    ASSERT_EQ(a, b);
 }
