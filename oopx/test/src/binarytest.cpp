@@ -11,7 +11,7 @@
 #include <set>
 
 const int TEST_STR_LEN = 10;
-const int TEST_ARR_LEN = 20;
+const int TEST_ARR_LEN = 100;
 const int INT_UP_BOUND = 100;
 const int INT_LOW_BOUND = 0;
 using namespace std;
@@ -20,7 +20,7 @@ void binary_test()
 {
 
     string file_name = "./testfile.tmp";
-    // 基础测试
+    // 基础测试——int/double/string/vector/set/list/map
     {
         int int_b, int_a = Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND);
         serialize(int_a, file_name);
@@ -80,7 +80,7 @@ void binary_test()
             ASSERT_EQ(it_map_a->second, it_map_b->second);
     }
 
-    // 高级测试——随意嵌套
+    // 高级测试——容器之间随意多重嵌套
     {
         vector<set<int>> vec_set1, vec_set2;
         for (size_t i = 0; i < TEST_ARR_LEN; i++)
