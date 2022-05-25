@@ -19,7 +19,7 @@ struct any_type
 };
 
 template <class T>
-auto to_tuple(T &&object) noexcept
+auto struct_to_tuple(T &&object) noexcept
 {
     using type = std::decay_t<T>;
     if constexpr (is_braces_constructible<type, any_type, any_type, any_type, any_type, any_type, any_type>{})
@@ -57,3 +57,45 @@ auto to_tuple(T &&object) noexcept
         return std::make_tuple();
     }
 }
+
+template <class S, std::size_t... Is, class Tup>
+S tuple_to_struct(std::index_sequence<Is...>, Tup &&tup, const S &something)
+{
+    using std::get;
+    return {get<Is>(std::forward<Tup>(tup))...};
+}
+template <class S, class Tup>
+S tuple_to_struct(Tup &&tup, const S &something)
+{
+    using T = std::remove_reference_t<Tup>;
+
+    return tuple_to_struct(
+        std::make_index_sequence<std::tuple_size<T>{}>{},
+        std::forward<Tup>(tup), something);
+}
+
+#define serialize_user(VAR, FILE)        \
+    {                                    \
+        auto tup = struct_to_tuple(VAR); \
+        serialize(tup, FILE);            \
+    }
+
+#define serialize_user_m(VAR, FILE, MODE) \
+    {                                     \
+        auto tup = struct_to_tuple(VAR);  \
+        MODE::serialize(tup, FILE);       \
+    }
+
+#define deserialize_user(VAR, FILE)       \
+    {                                     \
+        auto tup1 = struct_to_tuple(VAR); \
+        deserialize(tup1, FILE);          \
+        VAR = tuple_to_struct(tup1, VAR); \
+    }
+
+#define deserialize_user_m(VAR, FILE, MODE) \
+    {                                       \
+        auto tup1 = struct_to_tuple(VAR);   \
+        MODE::deserialize(tup1, FILE);      \
+        VAR = tuple_to_struct(tup1, VAR);   \
+    }

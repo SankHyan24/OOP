@@ -35,26 +35,24 @@ namespace BinSerial
     int deserialize_(std::list<T> &var, std::istream &in);
     template <typename T, typename C>
     int deserialize_(std::map<T, C> &var, std::istream &in);
+    // Interface function
     template <>
     int deserialize_(std::string &var, std::istream &in);
 
-    /**
-     * Function: deserialize
-     * Description: Deserialize a variable from a file
-     * @param var: the variable to be deserialized
-     * @param file_name: the file name to be deserialized
-     * @return: 0 if success, -1 if failed
-     */
     template <typename T>
     int deserialize(T &var, const std::string &file_name);
 
     template <typename T>
     int deserialize_(T &var, std::istream &in)
     {
-        if (std::is_arithmetic_v<T>)
-            in.read(reinterpret_cast<char *>(&var), sizeof(var));
-        else
-            throw std::runtime_error("deserialize_: Unsupported type");
+        // if (std::is_class_v<T>)
+        // {
+        //     auto tmp_struct = struct_to_tuple(var);
+        //     deserialize_(tmp_struct, in);
+        //     var = tuple_to_struct(tmp_struct, var);
+        // }
+        // else
+        in.read(reinterpret_cast<char *>(&var), sizeof(var));
         return 0;
     }
     template <typename T>
@@ -81,7 +79,6 @@ namespace BinSerial
     template <typename T, typename... Ts>
     void deserialize_(size_t index, std::tuple<T, Ts...> &t, std::istream &in)
     {
-        std::cout << "index: " << index << std::endl;
         if (index >= (1 + sizeof...(Ts)))
             throw std::invalid_argument("bad index");
         if (index > 0)
@@ -136,6 +133,13 @@ namespace BinSerial
         var = std::string(vec.begin(), vec.end());
         return res;
     }
+    /**
+     * Function: deserialize
+     * Description: Deserialize a variable from a file
+     * @param var: the variable to be deserialized
+     * @param file_name: the file name to be deserialized
+     * @return: 0 if success, -1 if failed
+     */
     template <typename T>
     int deserialize(T &var, const std::string &file_name)
     {

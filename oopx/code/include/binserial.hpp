@@ -37,14 +37,6 @@ namespace BinSerial
     int serialize_(std::map<T, C> &var, std::ostream &out);
     template <>
     int serialize_(std::string &var, std::ostream &out);
-
-    /**
-     * Function: serialize
-     * Description: Serialize a variable to a file
-     * @param var: the variable to be serialized
-     * @param file_name: the file name to be serialized
-     * @return: 0 if success, -1 if failed
-     */
     // Interface function
     template <typename T>
     int serialize(T &var, const std::string &file_name);
@@ -52,10 +44,7 @@ namespace BinSerial
     template <typename T>
     int serialize_(T &var, std::ostream &out)
     {
-        if (std::is_arithmetic_v<T>)
-            out.write(reinterpret_cast<char *>(&var), sizeof(var));
-        else
-            throw std::runtime_error("serialize_: Unsupported type");
+        out.write(reinterpret_cast<const char *>(&var), sizeof(var));
         return 0;
     }
     template <typename T>
@@ -121,6 +110,13 @@ namespace BinSerial
         std::vector<char> vec(var.begin(), var.end());
         return serialize_(vec, out);
     }
+    /**
+     * Function: serialize
+     * Description: Serialize a variable to a file
+     * @param var: the variable to be serialized
+     * @param file_name: the file name to be serialized
+     * @return: 0 if success, -1 if failed
+     */
     template <typename T>
     int serialize(T &var, const std::string &file_name)
     {
