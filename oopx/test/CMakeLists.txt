@@ -1,5 +1,6 @@
 add_executable(Test ./main.cpp)
 aux_source_directory(src test_source)
+target_link_libraries(Test tinyxml)
 target_sources(Test PUBLIC ${test_source})
 target_include_directories(Test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../code/include)
 target_include_directories(Test PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
