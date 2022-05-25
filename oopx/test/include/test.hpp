@@ -4,7 +4,7 @@
 #define ASSERT(MESSAGE, VALUE) assert((VALUE) && (MESSAGE))
 #define ASSERT_EQ(VALUE_1, VALUE_2) assert((VALUE_1) == (VALUE_2))
 #define ASSERT_NE(VALUE_1, VALUE_2) assert((VALUE_1) != (VALUE_2))
-//
+// constants and types
 const int TEST_STR_LEN = 10;
 const int TEST_ARR_LEN = 100;
 const int INT_UP_BOUND = 100;

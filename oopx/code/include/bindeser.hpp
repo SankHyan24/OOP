@@ -45,13 +45,6 @@ namespace BinSerial
     template <typename T>
     int deserialize_(T &var, std::istream &in)
     {
-        // if (std::is_class_v<T>)
-        // {
-        //     auto tmp_struct = struct_to_tuple(var);
-        //     deserialize_(tmp_struct, in);
-        //     var = tuple_to_struct(tmp_struct, var);
-        // }
-        // else
         in.read(reinterpret_cast<char *>(&var), sizeof(var));
         return 0;
     }
