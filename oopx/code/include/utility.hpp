@@ -51,4 +51,10 @@ namespace Utility
                 buf.push_back(uniform_dist(rng));
         }
     };
+
+    template <typename T>
+    int tuple_len(T val)
+    {
+        return (std::tuple_size<T>::value);
+    }
 }

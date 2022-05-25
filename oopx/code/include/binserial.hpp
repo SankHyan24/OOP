@@ -11,12 +11,24 @@
 #include <map>
 #include <set>
 #include <list>
+#include <macro.hpp>
+#include <utility.hpp>
+
 namespace BinSerial
 {
+    // Basic Function
     template <typename T>
     int serialize_(T &var, std::ostream &out);
     template <typename T>
     int serialize_(std::vector<T> &var, std::ostream &out);
+    template <typename T, typename C>
+    int serialize_(std::pair<T, C> &var, std::ostream &out);
+    void serialize_(size_t index, std::tuple<> &tuple, std::ostream &out);
+    template <typename T, typename... Ts>
+    void serialize_(size_t index, std::tuple<T, Ts...> &t, std::ostream &out);
+    // Advance Function
+    template <typename T, typename... Ts>
+    int serialize_(std::tuple<T, Ts...> &var, std::ostream &out);
     template <typename T>
     int serialize_(std::set<T> &var, std::ostream &out);
     template <typename T>
@@ -33,13 +45,17 @@ namespace BinSerial
      * @param file_name: the file name to be serialized
      * @return: 0 if success, -1 if failed
      */
+    // Interface function
     template <typename T>
     int serialize(T &var, const std::string &file_name);
 
     template <typename T>
     int serialize_(T &var, std::ostream &out)
     {
-        out.write(reinterpret_cast<char *>(&var), sizeof(var));
+        if (std::is_arithmetic_v<T>)
+            out.write(reinterpret_cast<char *>(&var), sizeof(var));
+        else
+            throw std::runtime_error("serialize_: Unsupported type");
         return 0;
     }
     template <typename T>
@@ -51,10 +67,33 @@ namespace BinSerial
             serialize_(i, out);
         return 0;
     }
+    template <typename T, typename C>
+    int serialize_(std::pair<T, C> &var, std::ostream &out)
+    {
+        serialize_(var.first, out);
+        serialize_(var.second, out);
+        return 0;
+    }
+    void serialize_(size_t index, std::tuple<> &tuple, std::ostream &out) {}
+    template <typename T, typename... Ts>
+    void serialize_(size_t index, std::tuple<T, Ts...> &t, std::ostream &out)
+    {
+        if (index >= (1 + sizeof...(Ts)))
+            throw std::invalid_argument("bad index");
+        if (index > 0)
+            serialize_(index - 1, reinterpret_cast<std::tuple<Ts...> &>(t), out);
+        serialize_(std::get<0>(t), out);
+    }
+    template <typename T, typename... Ts>
+    int serialize_(std::tuple<T, Ts...> &var, std::ostream &out)
+    {
+        auto size = std::tuple_size<std::tuple<T, Ts...>>::value;
+        serialize_(size - 1, var, out);
+        return 0;
+    }
     template <typename T>
     int serialize_(std::set<T> &var, std::ostream &out)
     {
-        // transform set to vector
         std::vector<T> vec;
         for (auto &i : var)
             vec.push_back(i);
@@ -75,7 +114,6 @@ namespace BinSerial
         for (auto &i : var)
             vec.push_back(std::make_pair(i.first, i.second));
         return serialize_(vec, out);
-        return 0;
     }
     template <>
     int serialize_(std::string &var, std::ostream &out)

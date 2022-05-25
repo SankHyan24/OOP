@@ -11,12 +11,24 @@
 #include <map>
 #include <set>
 #include <list>
+#include <macro.hpp>
+#include <utility.hpp>
+
 namespace BinSerial
 {
+    // Basic Function
     template <typename T>
     int deserialize_(T &var, std::istream &in);
     template <typename T>
     int deserialize_(std::vector<T> &var, std::istream &in);
+    template <typename T, typename C>
+    int deserialize_(std::pair<T, C> &var, std::istream &in);
+    void deserialize_(size_t index, std::tuple<> &tuple, std::istream &in);
+    template <typename T, typename... Ts>
+    void deserialize_(size_t index, std::tuple<T, Ts...> &t, std::istream &in);
+    // Advance Function
+    template <typename T, typename... Ts>
+    int deserialize_(std::tuple<T, Ts...> &var, std::istream &in);
     template <typename T>
     int deserialize_(std::set<T> &var, std::istream &in);
     template <typename T>
@@ -39,7 +51,10 @@ namespace BinSerial
     template <typename T>
     int deserialize_(T &var, std::istream &in)
     {
-        in.read(reinterpret_cast<char *>(&var), sizeof(T));
+        if (std::is_arithmetic_v<T>)
+            in.read(reinterpret_cast<char *>(&var), sizeof(var));
+        else
+            throw std::runtime_error("deserialize_: Unsupported type");
         return 0;
     }
     template <typename T>
@@ -53,6 +68,31 @@ namespace BinSerial
             deserialize_(tmp, in);
             var.push_back(tmp);
         }
+        return 0;
+    }
+    template <typename T, typename C>
+    int deserialize_(std::pair<T, C> &var, std::istream &in)
+    {
+        deserialize_(var.first, in);
+        deserialize_(var.second, in);
+        return 0;
+    }
+    void deserialize_(size_t index, std::tuple<> &tuple, std::istream &in) {}
+    template <typename T, typename... Ts>
+    void deserialize_(size_t index, std::tuple<T, Ts...> &t, std::istream &in)
+    {
+        std::cout << "index: " << index << std::endl;
+        if (index >= (1 + sizeof...(Ts)))
+            throw std::invalid_argument("bad index");
+        if (index > 0)
+            deserialize_(index - 1, reinterpret_cast<std::tuple<Ts...> &>(t), in);
+        deserialize_(std::get<0>(t), in);
+    }
+    template <typename T, typename... Ts>
+    int deserialize_(std::tuple<T, Ts...> &var, std::istream &in)
+    {
+        auto size = std::tuple_size<std::tuple<T, Ts...>>::value;
+        deserialize_(size - 1, var, in);
         return 0;
     }
     template <typename T>

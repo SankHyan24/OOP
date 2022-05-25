@@ -1,8 +1,7 @@
 #include <iostream>
 #include <fstream>
-#include <binserial.hpp>
 #include <utility.hpp>
-#include <xmlserial.hpp>
+#include <myserial.hpp>
 using namespace std;
 using namespace BinSerial;
 int main()

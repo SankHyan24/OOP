@@ -6,7 +6,8 @@ using namespace std;
 int main()
 {
     // test all
-    binary_test();
-
+    // binary_test();
+    // xml_test();
+    struct_test();
     return 0;
 }
