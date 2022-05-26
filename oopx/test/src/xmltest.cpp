@@ -9,6 +9,7 @@
 #include <vector>
 #include <set>
 using namespace std;
+using namespace XMLSerial;
 //用户类
 class User
 {
@@ -60,7 +61,7 @@ int insertXMLNode(const char *xmlPath, const User &user)
     userNode->InsertEndChild(gender);
 
     XMLElement *mobile = doc.NewElement("Mobile");
-    mobile->InsertEndChild(doc.NewText(user.mobile.c_str()));
+    // mobile->InsertEndChild(doc.NewText(user.mobile.c_str()));
     userNode->InsertEndChild(mobile);
 
     XMLElement *email = doc.NewElement("Email");
@@ -73,7 +74,7 @@ int createXML(const char *xmlPath)
 {
     const char *declaration = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>";
     XMLDocument doc;
-    doc.Parse(declaration); //会覆盖xml所有内容
+    // doc.Parse(declaration); //会覆盖xml所有内容
 
     //添加申明可以使用如下两行
     // XMLDeclaration* declaration=doc.NewDeclaration();
@@ -86,18 +87,28 @@ int createXML(const char *xmlPath)
 }
 void xml_test()
 {
-    User user("zhangsan", "123456", 1, "13800138000", "3200105788@zju.edu.cn");
-    const char *xmlPath = "./test.xml";
-    int res = createXML(xmlPath);
-    if (res != 0)
-    {
-        cout << "create xml file failed" << endl;
-        return;
-    }
-    res = insertXMLNode(xmlPath, user);
-    if (res != 0)
-    {
-        cout << "insert xml node failed" << endl;
-        return;
-    }
+    const char *xmlPath = "./test1.xml";
+    remove(xmlPath);
+    // User user("zhangsan", "123456", 1, "13800138000", "3200105788@zju.edu.cn");
+    // int res = createXML(xmlPath);
+    // if (res != 0)
+    // {
+    //     cout << "create xml file failed" << endl;
+    //     return;
+    // }
+    // res = insertXMLNode(xmlPath, user);
+    // if (res != 0)
+    // {
+    //     cout << "insert xml node failed" << endl;
+    //     return;
+    // }
+    // User a("zhangsan", "123456", 1, "13800138000", "");
+    int a = 10;
+    vector<long double> b;
+    vector<vector<long double>> c;
+    b.push_back(1.000001);
+    b.push_back(3.1);
+    c.push_back(b);
+    c.push_back(b);
+    serialize(c, "User", xmlPath);
 }

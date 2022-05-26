@@ -2,10 +2,26 @@
 #include <random>
 #include <iostream>
 #include <algorithm>
+#include <cstddef>
+#include <typeinfo>
+#include <cxxabi.h> // 所需头文件
+
 /**
  * Namespace: Utility
  * Description: Contains utility functions
  */
+
+template <typename T>
+struct TypeParseTraits;
+
+#define REGISTER_PARSE_TYPE(X)   \
+    template <>                  \
+    struct TypeParseTraits<X>    \
+    {                            \
+        static const char *name; \
+    };                           \
+    const char *TypeParseTraits<X>::name = #X
+
 namespace Utility
 {
     /**
@@ -67,4 +83,5 @@ namespace Utility
     {
         return (std::tuple_size<T>::value);
     }
+
 }
