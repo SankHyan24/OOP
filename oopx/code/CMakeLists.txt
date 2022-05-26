@@ -1,0 +1,6 @@
+add_executable(oopx)
+aux_source_directory(./ source)
+target_sources(oopx PUBLIC ${source})
+target_link_libraries(oopx tinyxml)
+target_include_directories(oopx PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/../lib)
+target_include_directories(oopx PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
