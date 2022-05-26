@@ -76,6 +76,16 @@ namespace Utility
                 buf.push_back(uniform_dist(rng));
             return buf;
         }
+        static std::string RandomString(size_t len, char low, char high)
+        {
+            static std::random_device rd;
+            std::default_random_engine rng(rd());
+            std::uniform_int_distribution<char> uniform_dist(low, high);
+            std::string buf;
+            for (size_t i = 0; i < len; i++)
+                buf.push_back(uniform_dist(rng));
+            return buf;
+        }
     };
 
     template <typename T>
