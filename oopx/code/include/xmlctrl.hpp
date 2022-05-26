@@ -9,30 +9,30 @@ namespace XMLSerial
     class SerialCtrl
     {
     public:
+        // Ctor & Dtor
         SerialCtrl(const std::string &xmlPath, const std::string &rootName, const std::string &version, const std::string &encoding) : xmlPath_(xmlPath)
         {
             doc_ = new XMLDocument();
-            if (doc_->LoadFile(xmlPath_.c_str()) != 0)
-                CreateXML(rootName, version, encoding);
-            else
-                std::cout << "load xml file failed" << std::endl;
+            CreateXML(rootName, version, encoding);
         }
         SerialCtrl(const std::string &xmlPath) : xmlPath_(xmlPath)
         {
             doc_ = new XMLDocument();
-            int res = doc_->LoadFile(xmlPath_.c_str());
-            if (res != 0)
+            if (doc_->LoadFile(xmlPath_.c_str()))
                 std::cout << "load xml file failed" << std::endl;
         }
         ~SerialCtrl() { delete doc_; }
-        // Get
+        // Get Element
         XMLElement *GetRoot() { return doc_->RootElement(); }
         XMLDocument *GetDoc() { return doc_; }
         std::string GetXMLPath() { return xmlPath_; }
         // XML control
         int InsertNode(const std::string &nodeName, XMLElement *root, XMLElement *&child, const std::string &nodeValue = "")
         {
-            child = doc_->NewElement(nodeName.c_str());
+            // replace the space in the nodeName with '_'
+            std::string nodeName_ = nodeName;
+            std::replace(nodeName_.begin(), nodeName_.end(), ' ', '_');
+            child = doc_->NewElement(nodeName_.c_str());
             if (nodeValue != "")
                 AddAttribute(child, "value", nodeValue);
             // InsertText(child, nodeValue);

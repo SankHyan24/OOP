@@ -17,9 +17,5 @@ target_link_libraries(oopx tinyxml)
 target_include_directories(oopx PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib)
 target_include_directories(oopx PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/code/include)
 
-add_executable(type_test ./ref/typetest.cpp)
-add_executable(tuple_test ./ref/tupletest.cpp)
-# add_executable(struct_test ./structtuple.cpp)
-
 enable_testing()
 add_test(NAME mytest COMMAND Test)

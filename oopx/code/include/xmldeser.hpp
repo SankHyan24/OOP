@@ -228,6 +228,7 @@ namespace XMLSerial
             std::stringstream ss(child->Attribute("length"));
             int length;
             ss >> length;
+            // std::cout<<;
             if (length != var.size())
                 throw std::runtime_error("XMLSerial::deserialize_: string length is not match");
         }

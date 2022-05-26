@@ -152,7 +152,7 @@ void binary_test()
         };
         my_class class2, class1(Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND),
                                 Utility::RandUtil::RandomDouble(0, 100),
-                                Utility::RandUtil::RandomString(TEST_STR_LEN));
+                                Utility::RandUtil::RandomString(TEST_STR_LEN, 'A', 'z'));
         serialize_user(class1, file_name);
         deserialize_user(class2, file_name);
         ASSERT_EQ(class1, class2);
@@ -178,5 +178,5 @@ void binary_test()
     }
 
     remove(file_name.c_str());
-    cout << "Test Done" << endl;
+    cout << "Binary Module Test Done" << endl;
 }

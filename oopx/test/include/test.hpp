@@ -1,9 +1,11 @@
 #pragma once
 // test utils
 #include <cassert>
+#define STR_EQ(VALUE_1, VALUE_2) (std::to_string(VALUE_1)) == (std::to_string(VALUE_2))
+
 #define ASSERT(MESSAGE, VALUE) assert((VALUE) && (MESSAGE))
 #define ASSERT_EQ(VALUE_1, VALUE_2) assert((VALUE_1) == (VALUE_2))
-#define ASSERT_STREQ(VALUE_1, VALUE_2) assert((std::to_string(VALUE_1)) == (std::to_string(VALUE_2)))
+#define ASSERT_STREQ(VALUE_1, VALUE_2) assert(STR_EQ(VALUE_1, VALUE_2))
 #define ASSERT_NE(VALUE_1, VALUE_2) assert((VALUE_1) != (VALUE_2))
 // constants and types
 const int TEST_STR_LEN = 10;

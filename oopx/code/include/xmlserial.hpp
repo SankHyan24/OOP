@@ -140,8 +140,7 @@ namespace XMLSerial
         remove(file_name.c_str());
         SerialCtrl a(file_name, "serialization", "1.0", "UTF-8");
         serialize_(var, a, a.GetRoot(), class_name);
-        a.GetDoc()->SaveFile(file_name.c_str());
-        return 0;
+        return a.GetDoc()->SaveFile(file_name.c_str());
     }
 #undef OPT_TYPE_NAME
 }

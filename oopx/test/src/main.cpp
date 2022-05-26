@@ -5,8 +5,8 @@
 using namespace std;
 int main()
 {
-    // test all
-    // binary_test();
+    binary_test();
     xml_test();
+    cout << "\n\nAll the test passed successfully!" << endl;
     return 0;
 }

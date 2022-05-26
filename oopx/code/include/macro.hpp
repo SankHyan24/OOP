@@ -3,7 +3,9 @@
 #include <type_traits>
 #include <cassert>
 #include <iostream>
+
 #define PRINT_MACRO(x) std::cout << x << std::endl;
+#define STR_EQ(VALUE_1, VALUE_2) (std::to_string(VALUE_1)) == (std::to_string(VALUE_2))
 
 template <class T, class... TArgs>
 decltype(void(T{std::declval<TArgs>()...}), std::true_type{}) test_is_braces_constructible(int);
@@ -79,11 +81,22 @@ S tuple_to_struct(Tup &&tup, const S &something)
         auto tup = struct_to_tuple(VAR); \
         serialize(tup, FILE);            \
     }
+#define serialize_user_n(VAR, FILE, NAME) \
+    {                                     \
+        auto tup = struct_to_tuple(VAR);  \
+        serialize(tup, FILE, NAME);       \
+    }
 
 #define serialize_user_m(VAR, FILE, MODE) \
     {                                     \
         auto tup = struct_to_tuple(VAR);  \
         MODE::serialize(tup, FILE);       \
+    }
+
+#define serialize_user_n_m(VAR, FILE, NAME, MODE) \
+    {                                             \
+        auto tup = struct_to_tuple(VAR);          \
+        MODE::serialize(tup, FILE, NAME);         \
     }
 
 #define deserialize_user(VAR, FILE)       \
@@ -93,9 +106,23 @@ S tuple_to_struct(Tup &&tup, const S &something)
         VAR = tuple_to_struct(tup1, VAR); \
     }
 
+#define deserialize_user_n(VAR, FILE, NAME) \
+    {                                       \
+        auto tup1 = struct_to_tuple(VAR);   \
+        deserialize(tup1, FILE, NAME);      \
+        VAR = tuple_to_struct(tup1, VAR);   \
+    }
+
 #define deserialize_user_m(VAR, FILE, MODE) \
     {                                       \
         auto tup1 = struct_to_tuple(VAR);   \
         MODE::deserialize(tup1, FILE);      \
         VAR = tuple_to_struct(tup1, VAR);   \
+    }
+
+#define deserialize_user_n_m(VAR, FILE, NAME, MODE) \
+    {                                               \
+        auto tup1 = struct_to_tuple(VAR);           \
+        MODE::deserialize(tup1, FILE, NAME);        \
+        VAR = tuple_to_struct(tup1, VAR);           \
     }

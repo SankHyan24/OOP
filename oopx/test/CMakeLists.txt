@@ -1,4 +1,4 @@
-add_executable(Test ./main.cpp)
+add_executable(Test)
 aux_source_directory(src test_source)
 target_link_libraries(Test tinyxml)
 target_sources(Test PUBLIC ${test_source})
