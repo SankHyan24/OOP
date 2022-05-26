@@ -17,13 +17,20 @@ namespace XMLSerial
             else
                 std::cout << "load xml file failed" << std::endl;
         }
+        SerialCtrl(const std::string &xmlPath) : xmlPath_(xmlPath)
+        {
+            doc_ = new XMLDocument();
+            int res = doc_->LoadFile(xmlPath_.c_str());
+            if (res != 0)
+                std::cout << "load xml file failed" << std::endl;
+        }
         ~SerialCtrl() { delete doc_; }
         // Get
         XMLElement *GetRoot() { return doc_->RootElement(); }
         XMLDocument *GetDoc() { return doc_; }
         std::string GetXMLPath() { return xmlPath_; }
         // XML control
-        int InsertNode(const std::string &nodeName, const std::string &nodeValue, XMLElement *root, XMLElement *&child)
+        int InsertNode(const std::string &nodeName, XMLElement *root, XMLElement *&child, const std::string &nodeValue = "")
         {
             child = doc_->NewElement(nodeName.c_str());
             if (nodeValue != "")
@@ -39,6 +46,11 @@ namespace XMLSerial
         void InsertText(XMLElement *node, const std::string &textContent)
         {
             node->InsertEndChild(doc_->NewText(textContent.c_str()));
+        }
+        int OpenXML()
+        {
+            std::cout << doc_->RootElement()->Name() << std::endl;
+            return 0;
         }
 
     private:
