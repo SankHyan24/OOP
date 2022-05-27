@@ -11,6 +11,7 @@
 #include <map>
 #include <set>
 #include <list>
+#include <memory>
 #include <macro.hpp>
 #include <utility.hpp>
 
@@ -19,6 +20,8 @@ namespace BinSerial
     // Basic Function
     template <typename T>
     int deserialize_(T &var, std::istream &in);
+    template <typename T>
+    int deserialize_(std::unique_ptr<T> &var, std::istream &in);
     template <typename T>
     int deserialize_(std::vector<T> &var, std::istream &in);
     template <typename T, typename C>
@@ -46,6 +49,14 @@ namespace BinSerial
     int deserialize_(T &var, std::istream &in)
     {
         in.read(reinterpret_cast<char *>(&var), sizeof(var));
+        return 0;
+    }
+    template <typename T>
+    int deserialize_(std::unique_ptr<T> &var, std::istream &in)
+    {
+        T temp;
+        deserialize_(temp, in);
+        var = std::make_unique<T>(temp);
         return 0;
     }
     template <typename T>

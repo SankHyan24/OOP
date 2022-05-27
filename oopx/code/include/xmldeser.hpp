@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <memory>
 #include <typeinfo>
 #include <set>
 #include <map>
@@ -20,6 +21,8 @@ namespace XMLSerial
     // Basic Function
     template <typename T>
     int deserialize_(T &var, SerialCtrl &a, XMLElement *node, XMLElement *&formor, const std::string &varname = "");
+    template <typename T>
+    int deserialize_(std::unique_ptr<T> &var, SerialCtrl &a, XMLElement *node, XMLElement *&formor, const std::string &varname = "");
     template <typename T>
     int deserialize_(std::vector<T> &var, SerialCtrl &a, XMLElement *node, XMLElement *&formor, const std::string &varname = "");
     template <typename T, typename C>
@@ -73,6 +76,14 @@ namespace XMLSerial
         else
             return -1;
         return 0;
+    }
+    template <typename T>
+    int deserialize_(std::unique_ptr<T> &var, SerialCtrl &a, XMLElement *node, XMLElement *&formor, const std::string &varname)
+    {
+        T temp;
+        int ret = deserialize_(temp, a, node, formor, varname);
+        var = std::make_unique<T>(temp);
+        return ret;
     }
     template <typename T>
     int deserialize_(std::vector<T> &var, SerialCtrl &a, XMLElement *node, XMLElement *&formor, const std::string &varname)

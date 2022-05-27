@@ -3,6 +3,7 @@
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <memory>
 #include <typeinfo>
 #include <set>
 #include <map>
@@ -19,6 +20,8 @@ namespace XMLSerial
     // Basic Function
     template <typename T>
     int serialize_(T &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T>
+    int serialize_(std::unique_ptr<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
     template <typename T>
     int serialize_(std::vector<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
     template <typename T, typename C>
@@ -48,6 +51,12 @@ namespace XMLSerial
     {
         XMLElement *child = nullptr;
         return a.InsertNode(OPT_TYPE_NAME(T, varname), node, child, std::to_string(var));
+    }
+    template <typename T>
+    int serialize_(std::unique_ptr<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname)
+    {
+        serialize_(*var, a, node, varname);
+        return 0;
     }
     template <typename T>
     int serialize_(std::vector<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname)

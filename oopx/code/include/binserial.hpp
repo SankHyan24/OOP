@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <map>
+#include <memory>
 #include <set>
 #include <list>
 #include <macro.hpp>
@@ -19,6 +20,8 @@ namespace BinSerial
     // Basic Function
     template <typename T>
     int serialize_(T &var, std::ostream &out);
+    template <typename T>
+    int serialize_(std::unique_ptr<T> &var, std::ostream &out);
     template <typename T>
     int serialize_(std::vector<T> &var, std::ostream &out);
     template <typename T, typename C>
@@ -45,6 +48,12 @@ namespace BinSerial
     int serialize_(T &var, std::ostream &out)
     {
         out.write(reinterpret_cast<const char *>(&var), sizeof(var));
+        return 0;
+    }
+    template <typename T>
+    int serialize_(std::unique_ptr<T> &var, std::ostream &out)
+    {
+        serialize_(*var, out);
         return 0;
     }
     template <typename T>

@@ -177,6 +177,24 @@ void binary_test()
         ASSERT_EQ(struct1, struct2);
     }
 
+    {
+        unique_ptr<int> ptr1(new int(Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND)));
+        unique_ptr<int> ptr2;
+        serialize(ptr1, file_name);
+        deserialize(ptr2, file_name);
+        ASSERT_EQ(*ptr1, *ptr2);
+
+        unique_ptr<vector<int>> ptr3(new vector<int>);
+        unique_ptr<vector<int>> ptr4;
+        int size = Utility::RandUtil::RandomInt(1, TEST_ARR_LEN);
+        for (size_t i = 0; i < size; i++)
+            ptr3->push_back(Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND));
+        serialize(ptr3, file_name);
+        deserialize(ptr4, file_name);
+        ASSERT_EQ(ptr3->size(), ptr4->size());
+        for (size_t i = 0; i < ptr3->size(); i++)
+            ASSERT_EQ(ptr3->at(i), ptr4->at(i));
+    }
     remove(file_name.c_str());
     cout << "Binary Module Test Done" << endl;
 }
