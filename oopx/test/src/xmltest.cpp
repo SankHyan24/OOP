@@ -23,6 +23,8 @@ void xml_test()
     //  *      type: The nested type of the above, even the tuple
     //  *  Section 3: User defined type test
     //  *      type: The user defined type (struct)
+    //  *  Section 4: Unique_ptr type test
+    //  *      type: Unique_ptr
     //  */
 
     { // 基础测试——int/double/string/vector/set/list/map等基础类型
@@ -168,12 +170,30 @@ void xml_test()
         my_struct struct2, struct1(Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND),
                                    Utility::RandUtil::RandomDouble(0, 100),
                                    Utility::RandUtil::RandomString(TEST_STR_LEN));
-        serialize_user(struct1, file_name);
-        deserialize_user(struct2, file_name);
+        serialize_user_n(struct1, file_name, "my_class");
+        deserialize_user_n(struct2, file_name, "my_class");
         // or use the code below if you dont in any namespace
         // serialize_user_m(struct1, file_name, BinSerial);
         // deserialize_user_m(struct2, file_name, BinSerial);
         ASSERT_EQ(struct1, struct2);
+    }
+
+    { // 智能指针测试（其他的实现原理其实一样，这里只实现了unique_ptr）
+        unique_ptr<int> ptr1(new int(Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND)));
+        unique_ptr<int> ptr2;
+        serialize(ptr1, file_name);
+        deserialize(ptr2, file_name);
+        ASSERT_EQ(*ptr1, *ptr2);
+
+        unique_ptr<vector<int>> vec_ptr1(new vector<int>);
+        unique_ptr<vector<int>> vec_ptr2;
+        for (size_t i = 0; i < TEST_ARR_LEN; i++)
+            vec_ptr1->push_back(Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND));
+        serialize(vec_ptr1, file_name);
+        deserialize(vec_ptr2, file_name);
+        ASSERT_EQ(vec_ptr1->size(), vec_ptr2->size());
+        for (size_t i = 0; i < vec_ptr1->size(); i++)
+            ASSERT_EQ((*vec_ptr1)[i], (*vec_ptr2)[i]);
     }
 
     cout << "XML Module Test Done" << endl;

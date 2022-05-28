@@ -5,15 +5,9 @@
 #include <bindeser.hpp>
 using namespace std;
 using namespace BinSerial;
+// 这个cpp并没有被使用。主要还是用Test里的main函数进行测试
 int main()
 {
-    int a = 0xABCDEF;
-    double score = 99.9;
-    string file_name = "../data/testfile";
-    // serialize(a, file_name);
-    int b;
-    // deserialize(b, file_name);
-    cout << b << endl;
     std::cout << "Hello World!" << std::endl;
     return 0;
 }

@@ -17,32 +17,41 @@
 using namespace tinyxml2;
 namespace XMLSerial
 {
-    // Basic Function
-    template <typename T>
-    int serialize_(T &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <typename T>
-    int serialize_(std::unique_ptr<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <typename T>
-    int serialize_(std::vector<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <typename T, typename C>
-    int serialize_(std::pair<T, C> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    void serialize_(size_t index, std::tuple<> &tuple, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <typename T, typename... Ts>
-    void serialize_(size_t index, std::tuple<T, Ts...> &t, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    // advanced
-    template <typename T, typename... Ts>
-    int serialize_(std::tuple<T, Ts...> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <typename T>
-    int serialize_(std::set<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <typename T>
-    int serialize_(std::list<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <typename T, typename C>
-    int serialize_(std::map<T, C> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
-    template <>
-    int serialize_(std::string &var, SerialCtrl &a, XMLElement *node, const std::string &varname);
     // Interface function
+    /**
+     * Function: serialize
+     * Description: Serialize a variable to a file
+     * @param var: the variable to be serialized
+     * @param file_name: the file name to be serialized
+     * @param class_name: the class name of the variable defined by user
+     * @return: 0 if success, -1 if failed (not implement)
+     */
     template <typename T>
     int serialize(T &var, const std::string &file_name, const std::string &class_name = "");
+
+    // Basic Function
+    template <typename T> // for primitive type
+    int serialize_(T &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T> // for unique_ptr
+    int serialize_(std::unique_ptr<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T> // for vector
+    int serialize_(std::vector<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T, typename C> // for pair
+    int serialize_(std::pair<T, C> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    void serialize_(size_t index, std::tuple<> &tuple, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T, typename... Ts> // for tuple
+    void serialize_(size_t index, std::tuple<T, Ts...> &t, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    // advanced
+    template <typename T, typename... Ts> // for tuple
+    int serialize_(std::tuple<T, Ts...> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T> // for set
+    int serialize_(std::set<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T> // for list
+    int serialize_(std::list<T> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <typename T, typename C> // for map
+    int serialize_(std::map<T, C> &var, SerialCtrl &a, XMLElement *node, const std::string &varname = "");
+    template <> // for string
+    int serialize_(std::string &var, SerialCtrl &a, XMLElement *node, const std::string &varname);
 
 #define OPT_TYPE_NAME(TYPE, VARNAME) ((VARNAME == "") ? TypeParseTraits<TYPE>::name : (VARNAME))
 #define OPT_STRING_NAME(STR, VARNAME) ((VARNAME == "") ? STR : (VARNAME))
@@ -152,8 +161,11 @@ namespace XMLSerial
         return a.GetDoc()->SaveFile(file_name.c_str());
     }
 #undef OPT_TYPE_NAME
-}
+#undef OPT_STRING_NAME
+} // namespace serialization
 
+// 在这里添加你想使用的基本类型的类型名：
+// 注意：如果不添加而使用是不会编译过的！
 REGISTER_PARSE_TYPE(int);
 REGISTER_PARSE_TYPE(const int);
 REGISTER_PARSE_TYPE(float);

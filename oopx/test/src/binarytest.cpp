@@ -177,7 +177,7 @@ void binary_test()
         ASSERT_EQ(struct1, struct2);
     }
 
-    {
+    { // 智能指针测试。所有智能指针原理上差不多，这里只实现了unique_ptr类
         unique_ptr<int> ptr1(new int(Utility::RandUtil::RandomInt(INT_LOW_BOUND, INT_UP_BOUND)));
         unique_ptr<int> ptr2;
         serialize(ptr1, file_name);

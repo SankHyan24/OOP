@@ -11,6 +11,7 @@
  * Description: Contains utility functions
  */
 
+// 定义一个类型的string声明
 template <typename T>
 struct TypeParseTraits;
 
