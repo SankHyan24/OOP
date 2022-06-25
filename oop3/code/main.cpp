@@ -43,16 +43,9 @@ public:
 
 int main()
 {
-    const A a;
-    a.set(1);
+    auto map = new game;
+    map->game_process();
+
+    cout << "hello, world!" << endl;
     return 0;
 }
-
-// int main()
-// {
-//     // auto map = new game;
-//     // map->game_process();
-
-//     cout << "hello, world!" << endl;
-//     return 0;
-// }
